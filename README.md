@@ -132,7 +132,7 @@ Run `python scripts/sim_grasp_multiple.py -h` to print a complete list of option
 
 ### Pre-trained models
 
-Pretrained models are also in the .... They are in `data/models`.
+Pretrained models are also in the 我的硬盘里. They are in `data/models`.
 
 ### Pre-generated data
 
@@ -150,7 +150,7 @@ Data generation is very costly. So we upload the generated data ...数据在我�
 ## Citing
 
 ```
-@article{jiang2021synergies,
+@article{待定,
  author = {Hang Yu, Xuebo Zhang, Zhenjie Zhao, Haochong Chen},
  journal = {待定},
  title = {3D SPGNet: A 6-DoF Grasp Detection Network via 3D Surface Constraint and TSDF Reconstruction},
