@@ -28,7 +28,7 @@ class SPGNet(torch.nn.Module):
 
         net_grid_output_depths = [64, 32, 16]
         net3d_hidden_depths = [128, 64, 64]
-        net3d_output_depths = [48, 24, 16]  # 降低输出通道数量，为了和更高分辨率的特征拼接55开
+        net3d_output_depths = [48, 24, 16] 
         net3d_channels = [
             [128, 256, 512],
             [64, 128, 256],
@@ -49,7 +49,7 @@ class SPGNet(torch.nn.Module):
         self.task_layers_width = spconv.SubMConv3d(net3d_output_depths[-1], 1, 1, 1, padding=1, bias=True, indice_key="dense")
 
         for i, (resname, res) in enumerate(self.resolutions.items()):
-            self.layer_norms[resname] = torch.nn.LayerNorm(net_grid_output_depths[i])  # 层正则化
+            self.layer_norms[resname] = torch.nn.LayerNorm(net_grid_output_depths[i]) 
             input_depth = prev_output_depth + net_grid_output_depths[i]
 
             if i > 0:
@@ -69,24 +69,18 @@ class SPGNet(torch.nn.Module):
     def forward(self, batch, voxel_inds_16):
 
         feats_grid = self.net_grid(batch["grid_input"])  # (16,64,10,10,10),(16,32,20,20,20),(16,16,40,40,40)
-        """绘制2D特征图"""
-        # for key in feats_2d:
-        #     feat_2d = feats_2d[key][0, 0, 0].cpu().numpy().astype(np.float32)
-        #     image0 = Image.fromarray(
-        #         ((feat_2d - feat_2d.min()) / (feat_2d.max() - feat_2d.min()) * 255)).convert("L")
-        #     image0.show()
 
         batch_size = batch["grid_input"].shape[0]  # 16
 
         device = voxel_inds_16.device
         voxel_outputs = {}
 
-        voxel_inds = voxel_inds_16  # 形状（10*10*10*16,4）
-        voxel_dim_16 = voxel_inds_16[-1][:3] + 1  # 位置索引（10,10,10），形状（3,）
-        voxel_features = torch.empty(  # 形状（10*10*10*16,0）
+        voxel_inds = voxel_inds_16  
+        voxel_dim_16 = voxel_inds_16[-1][:3] + 1 
+        voxel_features = torch.empty(  
             (len(voxel_inds), 0), dtype=feats_grid["coarse"].dtype, device=device
         )
-        voxel_logits = torch.empty(  # 形状（10*10*10*16,0）
+        voxel_logits = torch.empty( 
             (len(voxel_inds), 0), dtype=feats_grid["coarse"].dtype, device=device
         )
         for resname, res in self.resolutions.items():
@@ -96,13 +90,13 @@ class SPGNet(torch.nn.Module):
 
             feats_3d = self.layer_norms[resname](feats_3d)
 
-            voxel_features = torch.cat((voxel_features, feats_3d, voxel_logits), dim=-1)  # 先拼接后稀疏卷积  # 形状 （10*10*10*16,64）
+            voxel_features = torch.cat((voxel_features, feats_3d, voxel_logits), dim=-1)  
 
-            voxel_dim = (voxel_dim_16*(self.resolutions['coarse'] / res)).int().tolist()  # 实际值（10,10,10）
-            voxel_features = spconv.SparseConvTensor(voxel_features, xyzb2bxyz(voxel_inds), voxel_dim, batch_size)  # 形状（10*10*10*16,64）,形状（10*10*10*16,4）,（10,10,10）,16
+            voxel_dim = (voxel_dim_16*(self.resolutions['coarse'] / res)).int().tolist()  
+            voxel_features = spconv.SparseConvTensor(voxel_features, xyzb2bxyz(voxel_inds), voxel_dim, batch_size)  
             voxel_features = self.net3d[resname](voxel_features, voxel_dim)
 
-            voxel_logits = self.output_layers[resname](voxel_features)  # 形状（10*10*10*16,1）,形状（10*10*10*16,4）,（10,10,10）,16
+            voxel_logits = self.output_layers[resname](voxel_features) 
             voxel_outputs[resname] = voxel_logits
 
             """查看生成的稀疏和中间尺度"""
@@ -121,15 +115,15 @@ class SPGNet(torch.nn.Module):
 
             if resname in ["coarse", "medium"]:
                 # sparsify & upsample
-                occupancy = voxel_logits.features.squeeze(1) > 0  # 形状（10*10*10*16,）
+                occupancy = voxel_logits.features.squeeze(1) > 0 
                 # print(occupancy.shape)
                 if not torch.any(occupancy):
                     return voxel_outputs
-                voxel_features = self.upsampler.upsample_feats(  # 形状（80,48）
-                    voxel_features.features[occupancy]  # 假设只有10个元素被占用，则形状为（10,48）
+                voxel_features = self.upsampler.upsample_feats( 
+                    voxel_features.features[occupancy] 
                 )
-                voxel_inds = self.upsampler.upsample_inds(bxyz2xyzb(voxel_logits.indices)[occupancy])  # 形状（80，4）
-                voxel_logits = self.upsampler.upsample_feats(voxel_logits.features[occupancy])  # 形状（80,1）
+                voxel_inds = self.upsampler.upsample_inds(bxyz2xyzb(voxel_logits.indices)[occupancy]) 
+                voxel_logits = self.upsampler.upsample_feats(voxel_logits.features[occupancy]) 
 
         return voxel_outputs
 
@@ -139,16 +133,16 @@ class SPGNet(torch.nn.Module):
         for resname in self.resolutions:
             logits = voxel_logits[resname]
             gt = voxel_gt[resname]
-            gt = combineSparseConvTensor(gt, device=logits.features.device)  # 形状（i16*2，1），（i16*2，4）,（3,）,(1,)
+            gt = combineSparseConvTensor(gt, device=logits.features.device) 
             cur_loss = torch.zeros(1, device=logits.features.device, dtype=torch.float32)
-            if len(logits.indices) > 0:  # 形状（10*10*10*16,4）
+            if len(logits.indices) > 0: 
                 pred_scalar = _indice_to_scalar(logits.indices, [logits.batch_size] + logits.spatial_shape)
                 gt_scalar = _indice_to_scalar(gt.indices, [logits.batch_size] + logits.spatial_shape)
                 idx_query = npi.indices(gt_scalar.cpu().numpy(), pred_scalar.cpu().numpy(), missing=-1)
                 good_query = idx_query != -1
 
-                gt = gt.features.squeeze(1)[idx_query[good_query]]  # 重合体素的标签（标签和预测重合的体素）
-                logits = logits.features.squeeze(1)[good_query]  # 重合体素的预测
+                gt = gt.features.squeeze(1)[idx_query[good_query]] 
+                logits = logits.features.squeeze(1)[good_query] 
                 if len(logits) > 0:
                     if resname == "dense":
                         cur_loss = F.l1_loss(
@@ -259,7 +253,7 @@ class Upsampler(torch.nn.Module):
             torch.Tensor([[[2, 2, 2, 1]]]).to(torch.int32), requires_grad=False
         )
 
-    def upsample_inds(self, voxel_inds):  # 形状（10,4）
+    def upsample_inds(self, voxel_inds):
         return (
             voxel_inds[:, None] * self.upsample_mul + self.upsample_offsets
         ).reshape(-1, 4)
