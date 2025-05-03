@@ -36,7 +36,7 @@ class SPG(object):
         # y = torch.arange(40, dtype=torch.int32)  # 40
         # z = torch.arange(40, dtype=torch.int32)  # 40
         xx, yy, zz = torch.meshgrid(x, y, z, indexing='ij')
-        self.input_voxels_16 = torch.stack(  # 在最后新增一个维度进行拼接，形状（10*10*10=1000，3）
+        self.input_voxels_16 = torch.stack( 
             (xx.flatten(), yy.flatten(), zz.flatten()), dim=-1
         )
 
@@ -103,7 +103,7 @@ def predict(input_voxels_16, tsdf_vol, net, device):
     assert tsdf_vol.shape == (1, 40, 40, 40)
 
     tsdf_vol = torch.from_numpy(tsdf_vol).unsqueeze(0).to(device)
-    voxel_inds_16 = torch.cat([input_voxels_16.to(device), torch.zeros([input_voxels_16.shape[0], 1], device=device)], dim=1).int()  # (1000,4)
+    voxel_inds_16 = torch.cat([input_voxels_16.to(device), torch.zeros([input_voxels_16.shape[0], 1], device=device)], dim=1).int() 
 
     batch = {"grid_input": tsdf_vol}
 
@@ -113,11 +113,11 @@ def predict(input_voxels_16, tsdf_vol, net, device):
 
     rotations_score = torch.sigmoid(voxel_outputs["rotations_score"].features.squeeze(1)).cpu().numpy()
 
-    offset = torch.sigmoid(voxel_outputs["offset"].features.squeeze(1)).cpu().numpy()  # (m,3)
-    rotations = F.normalize(voxel_outputs["rotations"].features.squeeze(1), dim=1).cpu().numpy()  # (m,4)
-    width = voxel_outputs["width"].features.squeeze(1).cpu().numpy()  # (m,)
-    tsdf_real = 1.05 * torch.tanh(voxel_outputs["dense"].features).squeeze(-1).cpu().numpy()  # (m,)
-    index = voxel_outputs["dense"].indices[:, 1:].cpu().numpy()  # (m,3)
+    offset = torch.sigmoid(voxel_outputs["offset"].features.squeeze(1)).cpu().numpy()
+    rotations = F.normalize(voxel_outputs["rotations"].features.squeeze(1), dim=1).cpu().numpy()
+    width = voxel_outputs["width"].features.squeeze(1).cpu().numpy()
+    tsdf_real = 1.05 * torch.tanh(voxel_outputs["dense"].features).squeeze(-1).cpu().numpy()
+    index = voxel_outputs["dense"].indices[:, 1:].cpu().numpy()
 
     qual_vol = np.zeros(voxel_outputs["dense"].spatial_shape, dtype=np.float32)
     qual_vol[index[:, 0], index[:, 1], index[:, 2]] = rotations_score
@@ -130,7 +130,6 @@ def predict(input_voxels_16, tsdf_vol, net, device):
     offset_vol[index[:, 0], index[:, 1], index[:, 2]] = offset
 
     tsdf_real_vol = np.ones(voxel_outputs["dense"].spatial_shape, dtype=np.float32) * (-2)
-    # tsdf_real_vol = np.ones(voxel_outputs["dense"].spatial_shape, dtype=np.float32) * np.nan
     tsdf_real_vol[index[:, 0], index[:, 1], index[:, 2]] = tsdf_real
 
     return qual_vol, rot_vol, width_vol, offset_vol, tsdf_real_vol
