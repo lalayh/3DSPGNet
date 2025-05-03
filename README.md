@@ -132,11 +132,11 @@ Run `python scripts/sim_grasp_multiple.py -h` to print a complete list of option
 
 ### Pre-trained models
 
-Pretrained models are also in the 我的硬盘里. They are in `data/models`.
+Pretrained models are also in the 我的硬盘里（目前还不知道往哪里上传）. They are in `data/models`.
 
 ### Pre-generated data
 
-Data generation is very costly. So we upload the generated data ...数据在我的硬盘里
+Data generation is very costly. So we upload the generated data ...数据在我的硬盘里（目前还不知道往哪里上传）
 
 | Scenario | Raw data | Processed data |
 | ----------- | ----------- | ----------- |
