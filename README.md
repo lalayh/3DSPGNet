@@ -6,7 +6,7 @@
 
 ## Introduction
 
-3D sparse grasp network (3D SPGNet) is a network, which directly maps voxel features of object surfaces to grasp candidates.
+3D sparse grasp network (3D SPGNet) is a network, which directly maps voxel features of object surfaces to grasp candidates. our results are shown in data/result
 
 ## Installation
 
