@@ -32,7 +32,7 @@ def main(args):
     if args.terminal_num == 0:
         (args.root / "scenes").mkdir(parents=True)
         (args.root / "scenes_label").mkdir(parents=True)
-        write_setup(  # 1、存储工作空间大小、相机内参、夹爪参数
+        write_setup( 
             args.root,
             sim.size,
             sim.camera.intrinsic,
@@ -67,10 +67,10 @@ def main(args):
             continue
 
         # store the raw data
-        scene_id = write_sensor_data(args.root, rgb_imgs_side, depth_imgs_side, extrinsics_side, rgb_imgs, depth_imgs, extrinsics)  # 2、在scenes中存储单视角rgb和深度图、相机外参; 在scenes_label中存储12个视角rgb和深度图、相机外参
+        scene_id = write_sensor_data(args.root, rgb_imgs_side, depth_imgs_side, extrinsics_side, rgb_imgs, depth_imgs, extrinsics)  
         if args.save_scene:
             meshpath_list, scale_list, pose_list = get_mesh_pose_list_from_world(sim.world, args.object_set)
-            write_meshpath_scale_pose(args.root, scene_id, meshpath_list, scale_list, pose_list, name="mesh_pose_list")  # 3、在mesh_pose_list中存储每个物体的网格数据路径、物体大小、位姿（4×4旋转矩阵）
+            write_meshpath_scale_pose(args.root, scene_id, meshpath_list, scale_list, pose_list, name="mesh_pose_list") 
 
         for _ in range(GRASPS_PER_SCENE):
             # sample and evaluate a grasp point
@@ -78,7 +78,7 @@ def main(args):
             grasp, label = evaluate_grasp_point(sim, point, normal)
 
             # store the sample
-            write_grasp(args.root, scene_id, grasp, label)  # 4、存储抓取位姿、抓取标签（成功为1，失败为0）
+            write_grasp(args.root, scene_id, grasp, label)
             pbar.update()
 
     pbar.close()
@@ -102,10 +102,8 @@ def render_images(sim, n):
             theta = np.random.uniform(0.0, np.pi / 4.0)
             phi = (i - 5.5) * 2.0 * np.pi / 6
 
-        extrinsic = camera_on_sphere(origin, r, theta, phi)  # 世界坐标系在相机坐标系下的位姿 T_cam_task
+        extrinsic = camera_on_sphere(origin, r, theta, phi)
         rgb_img, depth_img = sim.camera.render(extrinsic)
-        # image = Image.fromarray(rgb_img)
-        # image.save('rgb_image_{}.png'.format(i))
 
         extrinsics[i] = extrinsic.to_list()
         rgb_imgs[i] = rgb_img
@@ -134,11 +132,6 @@ def render_side_images(sim, n=1, random=False):
 
         extrinsic = camera_on_sphere(origin, r, theta, phi)
         rgb_img, depth_img = sim.camera.render(extrinsic)
-        # print(rgb_img.shape, depth_img.shape)
-        # image = Image.fromarray(rgb_img)
-        # image1 = Image.fromarray(((depth_img - depth_img.min()) / (depth_img.max() - depth_img.min()) * 255)).convert("L")
-        # image.save('rgb_image.png')
-        # image1.save('depth_image.png')
 
         extrinsics[i] = extrinsic.to_list()
         rgb_imgs[i] = rgb_img
@@ -178,7 +171,7 @@ def evaluate_grasp_point(sim, pos, normal, num_rotations=6):
         ori = R * Rotation.from_euler("z", yaw)
         sim.restore_state()
         candidate = Grasp(Transform(ori, pos), width=sim.gripper.max_opening_width)
-        outcome, width = sim.execute_grasp(candidate, remove=False)  # 这里的世界坐标系和open3d坐标系(点云和体素坐标系相同)重合,抓取位姿的参考系就是这个坐标系
+        outcome, width = sim.execute_grasp(candidate, remove=False) 
         outcomes.append(outcome)
         widths.append(width)
 
@@ -210,12 +203,4 @@ if __name__ == "__main__":
     parser.add_argument("--terminal-num", type=int, default=0)
     args = parser.parse_args()
     args.save_scene = True
-    # if args.num_proc > 1:
-    #     pool = mp.Pool(processes=args.num_proc)
-    #     for i in range(args.num_proc):
-    #         pool.apply_async(func=main, args=(args, i))
-    #     pool.close()
-    #     pool.join()
-    # else:
-    #     main(args, 1)
     main(args)
