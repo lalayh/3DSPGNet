@@ -31,7 +31,6 @@ def main(args):
     # write_df(df, root)
 
     # balance
-    # df = read_df(root)
     positives = df[df["label"] == 1]
     negatives = df[df["label"] == 0]
     i = np.random.choice(negatives.index, len(negatives.index) - len(positives.index), replace=False)
@@ -39,7 +38,6 @@ def main(args):
     write_df(df, root)
 
     # remove unreferenced scenes.
-    # df = read_df(root)
     scenes = df["scene_id"].values
     for f in (root / "scenes").iterdir():
         if f.suffix == ".npz" and f.stem not in scenes:
@@ -67,4 +65,3 @@ if __name__ == "__main__":
     parser.add_argument("root", type=Path)
     args = parser.parse_args()
     main(args)
-    # 修改scenes和scenes_label里.npz文件数量和grasps.csv文件
