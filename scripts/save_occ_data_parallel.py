@@ -24,7 +24,7 @@ def save_occ(mesh_pose_list_path, args):
     name = os.path.basename(mesh_pose_list_path)[:-4]
     save_root = os.path.join(args.raw, 'occ', name)
     os.makedirs(save_root)
-    for i in range(args.num_file):  # 每个场景生成2个占用数据
+    for i in range(args.num_file): 
         np.savez(os.path.join(save_root, '%04d.npz' % i), points=points[i], occ=occ[i])
 
 
@@ -72,4 +72,3 @@ if __name__ == "__main__":
     parser.add_argument("--uniform", action='store_true', help='sample uniformly in the bbox, else sample in the tight bbox')
     args = parser.parse_args()
     main(args)
-    #  仅仅根据mesh_pose_list生成occ
