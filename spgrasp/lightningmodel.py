@@ -40,15 +40,15 @@ class LightningModel(pl.LightningModule):
     def step(self, batch, batch_idx):
 
         voxel_coords_16 = []
-        for i, x in enumerate(batch["input_voxels_16"]):  # batch["input_voxels_16"]形状（16，1000，3）
+        for i, x in enumerate(batch["input_voxels_16"]): 
             voxel_coords_16.append(torch.cat([x, torch.ones([x.shape[0], 1], device=x.device) * i], dim=1).int())
-        voxel_coords_16 = torch.cat(voxel_coords_16, dim=0)  # 在第零维度拼接，形状（1000*16,4）
+        voxel_coords_16 = torch.cat(voxel_coords_16, dim=0) 
 
         voxel_outputs = self.spgnet(batch, voxel_coords_16)
         voxel_gt = {
-            "coarse": batch["voxel_gt_coarse"],  # 形状list，[occ_16,occ_16]
-            "medium": batch["voxel_gt_medium"],  # 形状list，[occ_08,occ_08]
-            "dense": batch["voxel_gt_dense"],  # 形状list，[tsdf_04,tsdf_04]
+            "coarse": batch["voxel_gt_coarse"], 
+            "medium": batch["voxel_gt_medium"], 
+            "dense": batch["voxel_gt_dense"],
             "dense_label": batch["voxel_gt_label"],
             "dense_rotations": batch["voxel_gt_rotations"],
             "dense_width": batch["voxel_gt_width"],
@@ -78,7 +78,7 @@ class LightningModel(pl.LightningModule):
         loss, logs, voxel_outputs = self.step(batch, batch_idx)
         self.epoch_val_logs.append(logs)
 
-    def training_epoch_end(self, outputs):  # 每一轮结束都会调用
+    def training_epoch_end(self, outputs): 
         self.epoch_end(self.epoch_train_logs, "train")
 
     def validation_epoch_end(self, outputs):
@@ -115,7 +115,6 @@ class LightningModel(pl.LightningModule):
         return torch.utils.data.DataLoader(
             dset,
             batch_size=batch_size,
-            # shuffle=True,
             num_workers=64,
             collate_fn=collate.sparse_collate_fn,
             drop_last=True,
