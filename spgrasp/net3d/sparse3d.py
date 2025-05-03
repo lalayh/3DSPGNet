@@ -5,7 +5,7 @@ from torch import nn
 import spconv.pytorch as spconv
 
 
-def xyzb2bxyz(indices):  # 形状（6912*2，4）
+def xyzb2bxyz(indices):
     new_indices = torch.zeros_like(indices)
     new_indices[:, 0] = indices[:, 3]
     new_indices[:, 1] = indices[:, 0]
@@ -23,7 +23,7 @@ def bxyz2xyzb(indices):
     return new_indices
 
 
-def combineSparseConvTensor(xs, device):  # 形状list，[occ_16,occ_16]
+def combineSparseConvTensor(xs, device):
     features_batch = []
     indices_batch = []
     spatial_shape = xs[0].spatial_shape
@@ -36,7 +36,7 @@ def combineSparseConvTensor(xs, device):  # 形状list，[occ_16,occ_16]
     features_batch = torch.cat(features_batch, dim=0)
     indices_batch = torch.cat(indices_batch, dim=0)
 
-    spconvTensor = spconv.SparseConvTensor(  # 形状（i16*2，1），（i16*2，4）,（3,）,(1,)
+    spconvTensor = spconv.SparseConvTensor(
         features_batch, indices_batch, 
         spatial_shape, batch_size)
 
