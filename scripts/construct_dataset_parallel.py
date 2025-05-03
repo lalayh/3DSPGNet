@@ -25,14 +25,14 @@ def process_one_scene(args, f, df):
         tsdf = create_tsdf(size, RESOLUTION, depth_imgs_side, intrinsic, extrinsics_side)
     grid = tsdf.get_grid()
     tsdf_real = tsdf.get_tsdf()
-    write_voxel_grid(args.dataset, f.stem, grid, tsdf_real, rgb_imgs_side, depth_imgs_side, extrinsics_side)  # scenes中写入体素数据
+    write_voxel_grid(args.dataset, f.stem, grid, tsdf_real, rgb_imgs_side, depth_imgs_side, extrinsics_side) 
 
     tsdf_voxel = create_tsdf(size, 40, depth_imgs, intrinsic, extrinsics)
     tsdf_voxel_real = tsdf_voxel.get_tsdf()
     tsdf_label = np.zeros([40, 40, 40]).astype(np.longlong)
     tsdf_rotations = np.zeros([40, 40, 40, 2, 4]).astype(np.single)
     tsdf_width = np.zeros([40, 40, 40]).astype(np.single)
-    tsdf_offset = np.zeros([40, 40, 40, 3]).astype(np.single)  # 位置偏移量，大小为占一个体素边长的百分比
+    tsdf_offset = np.zeros([40, 40, 40, 3]).astype(np.single) 
     tsdf_index = np.zeros([40, 40, 40]).astype(np.longlong)
     df_one_scene = df[df["scene_id"] == f.stem]
     for k in range(len(df_one_scene.index)):
@@ -60,7 +60,7 @@ def process_one_scene(args, f, df):
     bounding_box = o3d.geometry.AxisAlignedBoundingBox(lower, upper)
     pc = pc.crop(bounding_box)
     pc = np.asarray(pc.points)
-    write_point_cloud(args.dataset, f.stem, pc)  # point_clouds中写入点云数据
+    write_point_cloud(args.dataset, f.stem, pc)
     return str(f.stem)
 
 def log_result(result):
@@ -99,7 +99,7 @@ def main(args):
     df["z"] /= voxel_size
     df["width"] /= voxel_size
     df = df.rename(columns={"x": "i", "y": "j", "z": "k"})
-    write_df(df, args.dataset)  # 修改grasps.csv文件，并写入new_dataset
+    write_df(df, args.dataset) 
     df = read_df(args.dataset)
 
     g_num_completed_jobs = []
