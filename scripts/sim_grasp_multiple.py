@@ -139,7 +139,7 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=Path, required=True)
     parser.add_argument("--config", required=True)
     parser.add_argument("--type", type=str, required=True)
-    parser.add_argument("--logdir", type=Path, default="data_spgrasp/experiments")
+    parser.add_argument("--logdir", type=Path, default="data/experiments")
     parser.add_argument("--description", type=str, default="")
     parser.add_argument("--scene",
                         type=str,
