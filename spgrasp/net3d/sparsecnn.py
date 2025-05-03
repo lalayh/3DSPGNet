@@ -22,8 +22,6 @@ class SCN3d(nn.Module):
         self.sync_bn = True
         self.global_avg = post_deform
         self.post_deform = post_deform
-
-        # ========== Encoder ==========
         
         if self.sync_bn == True:
             BatchNorm1d = autocast_norm(change_default_args(eps=1e-3, momentum=0.01)(nn.SyncBatchNorm))
@@ -37,14 +35,14 @@ class SCN3d(nn.Module):
         SparseInverseConv3d = change_default_args(bias=False)(spconv.SparseInverseConv3d)
 
         self.stem = nn.Sequential(
-            nn.Linear(kwargs["input_depth"], channels[0]),  # 160,128
-            BatchNorm1d(channels[0]),  # 128
+            nn.Linear(kwargs["input_depth"], channels[0]), 
+            BatchNorm1d(channels[0]),
             nn.ReLU(True)
         )
 
         self.sp_convs = nn.ModuleList()
         for i in range(len(channels)-1):
-            indice_key = 'cp%d'%(i+1)  # 1
+            indice_key = 'cp%d'%(i+1) 
             sp_conv = spconv.SparseSequential(
                 # FIXME: whether to use SparseMaxPool3d?
                 SpConv3d(channels[i], channels[i+1], 3, stride=2,
@@ -54,7 +52,6 @@ class SCN3d(nn.Module):
             )
             self.sp_convs.append(sp_conv)
 
-        # =========== Decoder ===========
         if self.global_avg:
             self.pool_scales = [1, 2, 3]
             self.global_convs = nn.ModuleList()
@@ -67,10 +64,10 @@ class SCN3d(nn.Module):
         if self.post_deform == False:
             self.upconvs = nn.ModuleList([
                 spconv.SparseSequential(
-                    SubMConv3d(hidden_depth, output_depth, 3, 1, padding=1, bias=False, indice_key="up0"),  # 128,96
+                    SubMConv3d(hidden_depth, output_depth, 3, 1, padding=1, bias=False, indice_key="up0"),
                     BatchNorm1d(output_depth),  # 96
                     nn.ReLU(True),
-                    SparseBasicBlock(output_depth, output_depth))  # 尺度也不变
+                    SparseBasicBlock(output_depth, output_depth))
             ])
         else:
             self.upconvs = nn.ModuleList([
@@ -84,8 +81,8 @@ class SCN3d(nn.Module):
         for i in range(1, len(channels)):
             self.upconvs.append(
                 spconv.SparseSequential(
-                    SparseInverseConv3d(hidden_depth, hidden_depth, 3, indice_key="cp%d"%i),  # 128,128
-                    BatchNorm1d(hidden_depth),  # 128
+                    SparseInverseConv3d(hidden_depth, hidden_depth, 3, indice_key="cp%d"%i),
+                    BatchNorm1d(hidden_depth),
                     nn.ReLU(True))
             )
 
@@ -113,15 +110,15 @@ class SCN3d(nn.Module):
     def forward(self, input, voxel_dim):
 
         # ========== Encoder ==========
-        voxel_features, voxel_coords_bxyz, batch_size = input.features, input.indices, input.batch_size  # 形状（10*10*10*16,64）,形状（10*10*10*16,4）,16
-        voxel_features = self.stem(voxel_features)  # 形状 (10*10*10*16,128)
+        voxel_features, voxel_coords_bxyz, batch_size = input.features, input.indices, input.batch_size 
+        voxel_features = self.stem(voxel_features)
 
         spconv_tensor = spconv.SparseConvTensor(voxel_features, voxel_coords_bxyz, voxel_dim, batch_size)
 
         feats = [spconv_tensor]
 
         for i in range(len(self.channels)-1):
-            spconv_tensor = self.sp_convs[i](spconv_tensor)  # 利用稀疏卷积进行下采样
+            spconv_tensor = self.sp_convs[i](spconv_tensor)
             feats.append(spconv_tensor)
 
         # ========== Decoder ==========
