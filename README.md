@@ -1,16 +1,12 @@
-# Synergies Between Affordance and Geometry: 6-DoF Grasp Detection via Implicit Representations
+# 3D SPGNet: A 6-DoF Grasp Detection Network via 3D Surface Constraint and TSDF Reconstruction
 
-[Zhenyu Jiang](http://zhenyujiang.me), [Yifeng Zhu](https://zhuyifengzju.github.io/), [Maxwell Svetlik](https://maxsvetlik.github.io/), [Kuan Fang](https://ai.stanford.edu/~kuanfang/), [Yuke Zhu](https://www.cs.utexas.edu/~yukez/)
+[Hang Yu](https://rh.nankai.edu.cn/info/1037/1144.htm), [Xuebo Zhang](https://rh.nankai.edu.cn/info/1016/1136.htm), [Zhenjie Zhao](https://rh.nankai.edu.cn/info/1016/1169.htm), [Haochong Chen](https://rh.nankai.edu.cn/info/1017/1193.htm)
 
-RSS (Robotics: Science and Systems) 2021
-
-[Project](https://sites.google.com/view/rpl-giga2021) | [arxiv](http://arxiv.org/abs/2104.01542) 
+待定 (submition) 2025
 
 ## Introduction
 
-GIGA (Grasp detection via Implicit Geometry and Affordance) is a network that jointly detects 6 DOF grasp poses and reconstruct the 3D scene. GIGA takes advantage of deep implicit functions, a continuous and memory-efficient representation, to enable differentiable training of both tasks. GIGA takes as input a Truncated Signed Distance Function (TSDF) representation of the scene, and predicts local implicit functions for grasp affordance and 3D occupancy. By querying the affordance implict functions with grasp center candidates, we can get grasp quality, grasp orientation and gripper width at these centers. GIGA is trained on a synthetic grasping dataset generated with physics simulation.
-
-If you find our work useful in your research, please consider [citing](#citing).
+3D sparse grasp network (3D SPGNet) is a network, which directly maps voxel features of object surfaces to grasp candidates.
 
 ## Installation
 
@@ -54,9 +50,7 @@ python scripts/convonet_setup.py build_ext --inplace
 
 ## Self-supervised Data Generation
 
-### Raw synthetic grasping trials
-
-Pile scenario:(开启4个终端，每个进程生成1000000个抓取点)
+Pile scenario:(开启4个终端，每个进程生成4000000个抓取点)
 
 ```bash
 python scripts/generate_data_parallel.py --scene pile --object-set pile/train --num-grasps 16000000 --save-scene ./data/pile/data_pile_train_random_raw_16M --num-proc 4 --terminal-num 0 --grasps-per-scene 480
@@ -66,8 +60,6 @@ Packed scenario:(开启4个终端，每个进程生成1000000个抓取点)
 ```bash
 python scripts/generate_data_parallel.py --scene packed --object-set packed/train --num-grasps 4000000 --save-scene ./data/pile/data_packed_train_random_raw_4M --num-proc 4 --terminal-num 0
 ```
-
-Please run `python scripts/generate_data_parallel.py -h` to print all options.
 
 ### Data clean and processing
 
@@ -108,7 +100,7 @@ Please run `python scripts/save_occ_data_parallel.py -h` to print all options.
 
 ## Training
 
-### Train Former3d
+### Train spgnet3d
 
 Run:
 (pile)
@@ -140,30 +132,28 @@ Run `python scripts/sim_grasp_multiple.py -h` to print a complete list of option
 
 ### Pre-trained models
 
-Pretrained models are also in the [data.zip](https://utexas.box.com/s/h3ferwjhuzy6ja8bzcm3nu9xq1wkn94s). They are in `data/models`.
+Pretrained models are also in the .... They are in `data/models`.
 
 ### Pre-generated data
 
-As mentioned in the [issue](https://github.com/UT-Austin-RPL/GIGA/issues/3), data generation is very costly. So we upload the generated data. Because the occupancy data takes too much space (over 100G), we do not upload the occupancy data, you can generate them following the instruction in this [section](#save-occupancy-data). This generation won't take too long time.
+Data generation is very costly. So we upload the generated data ...数据在我的硬盘里
 
 | Scenario | Raw data | Processed data |
 | ----------- | ----------- | ----------- |
-| Pile | [link](https://utexas.box.com/s/w1abs6xfe8d2fo0h9k4bxsdgtnvuwprj) | [link](https://utexas.box.com/s/l3zpzlc1p6mtnu7ashiedasl2m3xrtg2) |
-| Packed | [link](https://utexas.box.com/s/roaozwxiikr27rgeauxs3gsgpwry7gk7) | [link](https://utexas.box.com/s/h48jfsqq85gt9u5lvb82s5ft6k2hqdcn) |
+| Pile | pile | new_dataset |
+| Packed | pile | new_dataset |
 
 ## Related Repositories
 
-1. Our code is largely based on [VGN](https://github.com/ethz-asl/vgn) 
-
-2. We use [ConvONets](https://github.com/autonomousvision/convolutional_occupancy_networks) as our backbone.
+1. Our code is largely based on [GIGA](https://github.com/UT-Austin-RPL/GIGA) 
 
 ## Citing
 
 ```
 @article{jiang2021synergies,
- author = {Jiang, Zhenyu and Zhu, Yifeng and Svetlik, Maxwell and Fang, Kuan and Zhu, Yuke},
- journal = {Robotics: science and systems},
- title = {Synergies Between Affordance and Geometry: 6-DoF Grasp Detection via Implicit Representations},
- year = {2021}
+ author = {Hang Yu, Xuebo Zhang, Zhenjie Zhao, Haochong Chen},
+ journal = {待定},
+ title = {3D SPGNet: A 6-DoF Grasp Detection Network via 3D Surface Constraint and TSDF Reconstruction},
+ year = {2025}
 }
 ```
