@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import tqdm
 
-from vgn import io#, vis
+from vgn import io
 from vgn.grasp import *
 from vgn.utils import visual
 from vgn.simulation import ClutterRemovalSim
@@ -50,8 +50,6 @@ def run(
     run until (a) no objects remain, (b) the planner failed to find a grasp hypothesis,
     or (c) maximum number of consecutive failed grasp attempts.
     """
-    #sideview=False
-    #n = 6
     sim = ClutterRemovalSim(scene, object_set, gui=sim_gui, seed=seed, add_noise=add_noise, sideview=sideview)
     logger = Logger(logdir, description)
     cnt = 0
@@ -108,7 +106,6 @@ def run(
             total_times.append(timings["planning"] + timings["integration"])
 
             if len(grasps) == 0:
-                # print("没有检测到抓取点")
                 no_grasp += 1
                 break  # no detections found, abort this round
 
@@ -123,39 +120,13 @@ def run(
             logger.log_grasp(round_id, state, timings, grasp, score, label)
             
             if visualize:
-                # vol = np.ones([5, 5, 5], dtype=np.float32)
-                # visual.plot_voxel_grid(vol)
 
                 visual.plot_voxel_grid(tsdf.get_grid()[0])
                 tsdf_real = tsdf_real_generate + 2
                 tsdf_real[tsdf_real <= 1.2] = 0
                 tsdf_real[tsdf_real >= 2.7] = 0
                 visual.plot_voxel_grid(tsdf_real)
-                # fig = visual.plot_tsdf_with_grasps(tsdf.get_grid()[0], grasps)
-                plt.show(block=True)  # 远程todesk的时候plt.show不能用
-
-                # image = Image.fromarray(rgb_imgs[0].astype(np.uint8))
-                # image1 = Image.fromarray(((depth_imgs[0] - depth_imgs[0].min()) / (depth_imgs[0].max() - depth_imgs[0].min()) * 255)).convert("L")
-                # image.save('rgb_image.png')
-                # image1.save('depth_image.png')
-                # image.show()
-                # image1.show()
-
-                """画网格"""
-                # plt.savefig('./test.jpg')
-                # plt.close(fig)
-                # pred_mesh_o3d = utils.to_mesh(
-                #     tsdf_real_generate,
-                #     voxel_size=0.0075,
-                #     level=0,
-                #     # mask=tsdf_real_generate != -2,
-                #     mask=~np.isnan(tsdf_real_generate),
-                # )
-                # pred_mesh = trimesh.Trimesh(
-                #     vertices=np.asarray(pred_mesh_o3d.vertices),
-                #     faces=np.asarray(pred_mesh_o3d.triangles),
-                # )
-                # pred_mesh.show()
+                plt.show(block=True) 
         
             if last_label == Label.FAILURE and label == Label.FAILURE:
                 consecutive_failures += 1
