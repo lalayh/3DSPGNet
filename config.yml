@@ -1,0 +1,20 @@
+voxel_size: 0.0075
+
+ckpt: null
+seed: 11
+use_amp: False
+
+initial_epochs: 10
+initial_lr: .001
+initial_batch_size: 16
+
+finetune_epochs: 5
+finetune_lr: .0001
+finetune_batch_size: 16
+
+wandb_project_name: "spgrasp_packed"
+
+raw_dataset_dir: "./data/pile"
+new_dataset_dir: "./data/new_dataset"
+
+dataset_split_dir: "./data/split"
