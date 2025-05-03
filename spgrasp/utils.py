@@ -7,8 +7,6 @@ import skimage.measure
 
 def log_transform(x, shift=1):
     # https://github.com/magicleap/Atlas
-    """rescales TSDF values to weight voxels near the surface more than close
-    to the truncation distance"""
     return x.sign() * (1 + x.abs() / shift).log()
 
 
