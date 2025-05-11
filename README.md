@@ -132,7 +132,7 @@ Pretrained models are in the [data.zip](https://huggingface.co/lalayh/3DSPGNet/r
 
 ### Pre-generated data
 
-Data generation is very costly, so we upload the generated data . However, the occupancy data of [GIGA](https://github.com/UT-Austin-RPL/GIGA) exceeds 100 GB; therefore, we only uploaded the processed dataset. The new dataset alone is still sufficient to train our model and [VGN](https://github.com/ethz-asl/vgn).
+Data generation is very costly, so we upload the generated data . However, the occupancy data of [GIGA](https://github.com/UT-Austin-RPL/GIGA) exceeds 100 GB; therefore, we only uploaded the processed dataset. The new dataset alone is still sufficient to train our model and [VGN](https://github.com/ethz-asl/vgn). After downloading, extract it to the data folder under the repo's root.
 
 | Raw data | Processed data |
 | ----------- | ----------- |
