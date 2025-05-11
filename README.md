@@ -136,7 +136,7 @@ Data generation is very costly, so we upload the generated data . However, the o
 
 | Raw data | Processed data |
 | ----------- | ----------- |
-| pile | [new dataset](https://huggingface.co/lalayh/3DSPGNet/resolve/main/data.zip) |
+| pile | [new dataset](https://huggingface.co/datasets/lalayh/Processed_data/resolve/main/new_dataset.zip) |
 
 ## Related Repositories
 
