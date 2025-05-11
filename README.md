@@ -2,7 +2,7 @@
 
 [Hang Yu](https://rh.nankai.edu.cn/info/1037/1144.htm), [Xuebo Zhang](https://rh.nankai.edu.cn/info/1016/1136.htm), [Zhenjie Zhao](https://rh.nankai.edu.cn/info/1016/1169.htm), [Haochong Chen](https://rh.nankai.edu.cn/info/1017/1193.htm)
 
-待定 (submition) 2025
+TBD (submition) 2025
 
 ## Introduction
 
@@ -10,19 +10,19 @@
 
 ## Installation
 
-1. 安装CUDA toolkit完整版11.1（必须得这个版本，和pytorch、spconv-cu111匹配）.
+1. Install the full version of CUDA Toolkit 11.1 (compatible with PyTorch and spconv-cu111).
 
-2. 创建conda环境
+2. Create a conda environment.
 ```
 conda create -n spgnet3d python=3.8
 ```
 
-3. 激活conda环境
+3. Activate the conda environment.
 ```
 conda activate spgnet3d
 ```
 
-4. 在conda环境中安装
+4. Install in the conda environment.
 ```
 conda install pytorch-gpu=1.10.0 torchvision=0.9 cudatoolkit=11.1
 ```
@@ -50,15 +50,15 @@ python scripts/convonet_setup.py build_ext --inplace
 
 ## Self-supervised Data Generation
 
-Pile scenario:(开启4个终端，每个进程生成4000000个抓取点)
+Pile scenario:
 
 ```bash
-python scripts/generate_data_parallel.py --scene pile --object-set pile/train --num-grasps 16000000 --save-scene ./data/pile/data_pile_train_random_raw_16M --num-proc 4 --terminal-num 0 --grasps-per-scene 480
+python scripts/generate_data_parallel.py --scene pile --object-set pile/train --num-grasps 16000000 --save-scene ./data/pile/data_pile_train_random_raw_16M --num-proc 1 --terminal-num 0 --grasps-per-scene 480
 ```
 
-Packed scenario:(开启4个终端，每个进程生成1000000个抓取点)
+Packed scenario:
 ```bash
-python scripts/generate_data_parallel.py --scene packed --object-set packed/train --num-grasps 4000000 --save-scene ./data/pile/data_packed_train_random_raw_4M --num-proc 4 --terminal-num 0
+python scripts/generate_data_parallel.py --scene packed --object-set packed/train --num-grasps 4000000 --save-scene ./data/pile/data_packed_train_random_raw_4M --num-proc 1 --terminal-num 0
 ```
 
 ### Data clean and processing
@@ -70,7 +70,7 @@ python scripts/clean_balance_data.py ./data/pile/data_pile_train_random_raw_16M
 ```
 (packed)
 ```bash
-python scripts/clean_balance_data.py ./data/pile/data_packed_train_random_raw_4M/
+python scripts/clean_balance_data.py ./data/pile/data_packed_train_random_raw_4M
 ```
 
 Then construct the dataset (add noise):
@@ -80,12 +80,11 @@ python scripts/construct_dataset_parallel.py --num-proc 1 --single-view --add-no
 ```
 (packed)
 ```bash
-python scripts/construct_dataset_parallel.py --num-proc 1 --single-view --add-noise dex ./data/pile/data_packed_train_random_raw_4M/ ./data/new_dataset/data_packed_train_random_new_4M
+python scripts/construct_dataset_parallel.py --num-proc 1 --single-view --add-noise dex ./data/pile/data_packed_train_random_raw_4M ./data/new_dataset/data_packed_train_random_new_4M
 ```
 
 ### Save occupancy data
 
-Sampling occupancy data on the fly can be very slow and block the training, so I sample and store the occupancy data in files beforehand:
 (pile)
 ```bash
 python scripts/save_occ_data_parallel.py ./data/pile/data_pile_train_random_raw_16M 100000 2 --num-proc 1
@@ -94,8 +93,6 @@ python scripts/save_occ_data_parallel.py ./data/pile/data_pile_train_random_raw_
 ```bash
 python scripts/save_occ_data_parallel.py ./data/pile/data_packed_train_random_raw_4M/ 100000 2 --num-proc 1
 ```
-
-Please run `python scripts/save_occ_data_parallel.py -h` to print all options.
 
 
 ## Training
@@ -126,22 +123,20 @@ python scripts/sim_grasp_multiple.py --num-view 1 --object-set packed/test --sce
 
 This commands will run experiment with each seed specified in the arguments.
 
-Run `python scripts/sim_grasp_multiple.py -h` to print a complete list of optional arguments.
 
 ## Pre-trained models and pre-generated data
 
 ### Pre-trained models
 
-Pretrained models are also in the 我的硬盘里（目前还不知道往哪里上传）. They are in `data/models`.
+Pretrained models are in the [data.zip](https://huggingface.co/lalayh/3DSPGNet/resolve/main/data.zip). They are in `data/models`.
 
 ### Pre-generated data
 
-Data generation is very costly. So we upload the generated data ...数据在我的硬盘里（目前还不知道往哪里上传）
+Data generation is very costly, so we upload the generated data . However, the occupancy data of [GIGA](https://github.com/UT-Austin-RPL/GIGA) exceeds 100 GB; therefore, we only uploaded the processed dataset. The new dataset alone is still sufficient to train our model and [VGN](https://github.com/ethz-asl/vgn).
 
-| Scenario | Raw data | Processed data |
-| ----------- | ----------- | ----------- |
-| Pile | pile | new_dataset |
-| Packed | pile | new_dataset |
+| Raw data | Processed data |
+| ----------- | ----------- |
+| pile | [new dataset](https://huggingface.co/lalayh/3DSPGNet/resolve/main/data.zip) |
 
 ## Related Repositories
 
@@ -150,9 +145,9 @@ Data generation is very costly. So we upload the generated data ...数据在我�
 ## Citing
 
 ```
-@article{待定,
+@article{TBD,
  author = {Hang Yu, Xuebo Zhang, Zhenjie Zhao, Haochong Chen},
- journal = {待定},
+ journal = {TBD},
  title = {3D SPGNet: A 6-DoF Grasp Detection Network via 3D Surface Constraint and TSDF Reconstruction},
  year = {2025}
 }
