@@ -6,7 +6,8 @@ TBD (submition) 2025
 
 ## Introduction
 
-3D sparse grasp network (3D SPGNet) is a network, which directly maps voxel features of object surfaces to grasp candidates. our results are shown in `data/result`.
+Generating reliable grasp configurations in cluttered scenes is an important guarantee for robots to successfully grasp objects. The existing learning-based grasp detection methods directly encode the voxelized scene into the latent space to obtain the grasp configuration, which not only ignores the reliability of grasp selection, but also does not consider the explicit geometric constraint of the space occupied by the object surface. In this paper, we propose a 3D sparse grasp network (3D SPGNet), which directly maps voxel features of object surfaces to grasp candidates to enforce explicit constraints, while leveraging the dense Truncated Signed Distance Function (TSDF) reconstruction to enhance grasp reliability through implicit synergy. Specifically, we first use a 3D CNN to extract multi-scale features at three different resolutions from the voxelized input. Then, we apply the proposed 3D surface constraint block to aggregate features and perform explicit geometric mapping on the encoded non-empty voxels. Finally, we reconstruct the scene from sparse to dense and generate the grasp configuration accordingly. Moreover, we propose a novel loss function for estimating reliable grasp scores and poses. Simulation experiments demonstrate that our method improves the grasp success rates and declutter rates by approximately 9% compared to the latest baseline. Further, we deploy the model on a real robot arm, and the real-world experimental results also verify the generalization performance of the proposed method. our results are shown in `data/result`.
+![overview](image/overview.jpg)
 
 ## Installation
 
