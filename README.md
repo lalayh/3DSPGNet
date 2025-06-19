@@ -3,6 +3,7 @@
 [Hang Yu](https://rh.nankai.edu.cn/info/1037/1144.htm), [Xuebo Zhang](https://rh.nankai.edu.cn/info/1016/1136.htm), [Zhenjie Zhao](https://rh.nankai.edu.cn/info/1016/1169.htm), [Haochong Chen](https://rh.nankai.edu.cn/info/1017/1193.htm)
 
 Pattern Recognition (submition) 2025
+* The experimental video can be found [here](https://youtu.be/0cW_LnQTG8Y).
 
 ## Introduction
 
