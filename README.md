@@ -1,6 +1,6 @@
 # 3D SPGNet: A 6-DoF Grasp Detection Network via 3D Surface Constraint and TSDF Reconstruction
 
-[Hang Yu](https://rh.nankai.edu.cn/info/1037/1144.htm), [Xuebo Zhang](https://rh.nankai.edu.cn/info/1016/1136.htm), [Zhenjie Zhao](https://rh.nankai.edu.cn/info/1016/1169.htm), [Haochong Chen](https://rh.nankai.edu.cn/info/1017/1193.htm)
+[Hang Yu](https://rh.nankai.edu.cn/info/1037/1144.htm), [Xuebo Zhang](https://rh.nankai.edu.cn/info/1016/1136.htm), [Zhenjie Zhao](https://rh.nankai.edu.cn/info/1016/1169.htm), [Haochong Chen](https://rh.nankai.edu.cn/info/1037/1360.htm)
 
 Pattern Recognition (submition) 2025
 * The experimental video can be found [here](https://youtu.be/0cW_LnQTG8Y).
