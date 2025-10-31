@@ -2,7 +2,7 @@
 
 [Hang Yu](https://rh.nankai.edu.cn/info/1037/1144.htm), [Xuebo Zhang](https://rh.nankai.edu.cn/info/1016/1136.htm), [Zhenjie Zhao](https://rh.nankai.edu.cn/info/1016/1169.htm), [Haochong Chen](https://rh.nankai.edu.cn/info/1037/1360.htm)
 
-IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS (submission) 2025
+IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS (Under Review) 2025
 * The experimental video can be found [here](https://youtu.be/0cW_LnQTG8Y).
 
 ## Introduction
@@ -149,7 +149,7 @@ Data generation is very costly, so we upload the generated data . However, the o
 ```
 @article{TBD,
  author = {Hang Yu, Xuebo Zhang, Zhenjie Zhao, Haochong Chen},
- journal = {IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS (submission)},
+ journal = {IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS (Under Review)},
  title = {3D SPGNet: A 6-DoF Grasp Detection Network via 3D Surface Constraint and TSDF Reconstruction},
  year = {2025}
 }
