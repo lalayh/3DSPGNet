@@ -91,6 +91,10 @@ def run(
                 scene_mesh = get_scene_from_mesh_pose_list(meshpath_list, scale_list, pose_list)
                 if model_type == 'spg':
                     grasps, scores, timings["planning"], visual_mesh, tsdf_real_generate = grasp_plan_fn(state, scene_mesh)
+                elif model_type == 'anygrasp':
+                    grasps, scores, timings["planning"], visual_mesh = grasp_plan_fn(intrinsic.copy(), extrinsic.copy(),
+                                                                                     rgb_imgs.copy(), depth_imgs.copy(),
+                                                                                     scene_mesh)
                 else:
                     grasps, scores, timings["planning"], visual_mesh = grasp_plan_fn(state, scene_mesh)
                 scene_mesh.show()
@@ -99,6 +103,9 @@ def run(
             else:
                 if model_type == 'spg':
                     grasps, scores, timings["planning"], tsdf_real_generate = grasp_plan_fn(state)
+                elif model_type == 'anygrasp':
+                    grasps, scores, timings["planning"] = grasp_plan_fn(intrinsic.copy(), extrinsic.copy(),
+                                                                        rgb_imgs.copy(), depth_imgs.copy())
                 else:
                     grasps, scores, timings["planning"] = grasp_plan_fn(state)
 
