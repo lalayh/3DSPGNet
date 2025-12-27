@@ -2,7 +2,8 @@ import argparse
 import numpy as np
 import json
 from pathlib import Path
-
+# import sys
+# sys.path.append("./anygrasp_sdk/grasp_detection")
 from vgn.detection import VGN
 from vgn.detection_implicit import VGNImplicit
 from spgrasp.detection_sp import SPG
@@ -10,6 +11,7 @@ from spgrasp import clutter_removal
 from vgn.utils.misc import set_random_seed
 from pytorch_lightning.callbacks import ModelCheckpoint
 import yaml
+from spgrasp.detection_anygrasp import ANYGrasp
 
 
 class SaveCheckpoint(ModelCheckpoint):
@@ -61,6 +63,13 @@ def main(args):
                             force_detection=args.force,
                             out_th=0.1,
                             visualize=args.vis)
+    elif args.type == 'anygrasp':
+        grasp_planner = ANYGrasp(checkpoint_path=args.model,
+                                 max_gripper_width=0.1,
+                                 gripper_height=0.03,
+                                 top_down_grasp=True,
+                                 debug=False,
+                                 visualize=args.vis)
     elif args.type == 'spg':
         with open(args.config, "r") as f:
             config = yaml.safe_load(f)
