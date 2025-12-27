@@ -50,7 +50,7 @@ pip install -e .
 python scripts/convonet_setup.py build_ext --inplace
 ```
 
-9. Install the AnyGrasp SDK. Note: to avoid package conflicts, graspnetAPI must be installed from source. Also, replace the `demo.py` file in grasp_detection with our `demo.py`.
+9. Install the [AnyGrasp SDK](https://github.com/graspnet/anygrasp_sdk). Note: to avoid package conflicts, [graspnetAPI](https://github.com/graspnet/graspnetAPI) must be installed from source. Also, replace the `demo.py` file in grasp_detection with our `demo.py`.
 
 ## Self-supervised Data Generation
 
