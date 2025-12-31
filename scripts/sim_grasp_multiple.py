@@ -12,6 +12,7 @@ from vgn.utils.misc import set_random_seed
 from pytorch_lightning.callbacks import ModelCheckpoint
 import yaml
 from spgrasp.detection_anygrasp import ANYGrasp
+from spgrasp.detection_graspnerf import GraspNeRFPlanner
 
 
 class SaveCheckpoint(ModelCheckpoint):
@@ -70,6 +71,8 @@ def main(args):
                                  top_down_grasp=True,
                                  debug=False,
                                  visualize=args.vis)
+    elif args.type == 'graspnerf':
+        grasp_planner = GraspNeRFPlanner(args=args, cfg_fn=None, best=args.best, visualize=args.vis)
     elif args.type == 'spg':
         with open(args.config, "r") as f:
             config = yaml.safe_load(f)
@@ -190,6 +193,10 @@ if __name__ == "__main__":
     parser.add_argument("--vis",
                         action="store_true",
                         help="visualize and save affordance")
+    parser.add_argument("--cfg_fn", type=str, default="src/nr/configs/nrvgn_sdf.yaml")
+    parser.add_argument('--database_name', type=str,
+                        default='vgn_syn/train/packed/packed_170-220/032cd891d9be4a16be5ea4be9f7eca2b/w_0.8',
+                        help='<dataset_name>/<scene_name>/<scene_setting>')
 
     args = parser.parse_args()
     main(args)
