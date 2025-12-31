@@ -52,6 +52,8 @@ python scripts/convonet_setup.py build_ext --inplace
 
 9. Install the [AnyGrasp SDK](https://github.com/graspnet/anygrasp_sdk). Note: to avoid package conflicts, [graspnetAPI](https://github.com/graspnet/graspnetAPI) must be installed from source. Also, replace the `demo.py` file in grasp_detection with our `demo.py`.
 
+10. You can download the GraspNeRF pretrained weights from [here](https://github.com/PKU-EPIC/GraspNeRF). After downloading, please place the file under `src/nr/ckpt`.
+
 ## Self-supervised Data Generation
 
 Pile scenario:
@@ -144,7 +146,7 @@ Data generation is very costly, so we upload the generated data . However, the o
 
 ## Related Repositories
 
-1. Our code is largely based on [GIGA](https://github.com/UT-Austin-RPL/GIGA) and [anygrasp](https://github.com/graspnet/anygrasp_sdk)
+1. Our code is largely based on [GIGA](https://github.com/UT-Austin-RPL/GIGA), [anygrasp](https://github.com/graspnet/anygrasp_sdk), and [GraspNeRF](https://github.com/PKU-EPIC/GraspNeRF)
 
 ## Citing
 
