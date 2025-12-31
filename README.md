@@ -146,7 +146,7 @@ Data generation is very costly, so we upload the generated data . However, the o
 
 ## Related Repositories
 
-1. Our code is largely based on [GIGA](https://github.com/UT-Austin-RPL/GIGA), [anygrasp](https://github.com/graspnet/anygrasp_sdk), and [GraspNeRF](https://github.com/PKU-EPIC/GraspNeRF)
+1. Our code is largely based on [GIGA](https://github.com/UT-Austin-RPL/GIGA), [anygrasp](https://github.com/graspnet/anygrasp_sdk), and [GraspNeRF](https://github.com/PKU-EPIC/GraspNeRF).
 
 ## Citing
 
