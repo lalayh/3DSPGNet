@@ -95,6 +95,12 @@ def run(
                     grasps, scores, timings["planning"], visual_mesh = grasp_plan_fn(intrinsic.copy(), extrinsic.copy(),
                                                                                      rgb_imgs.copy(), depth_imgs.copy(),
                                                                                      scene_mesh)
+                elif model_type == 'graspnerf':
+                    grasps, scores, timings["planning"], visual_mesh = grasp_plan_fn(n,
+                                                                                     intrinsic.copy(),
+                                                                                     extrinsic.copy(),
+                                                                                     rgb_imgs.copy(),
+                                                                                     scene_mesh)
                 else:
                     grasps, scores, timings["planning"], visual_mesh = grasp_plan_fn(state, scene_mesh)
                 scene_mesh.show()
@@ -106,6 +112,12 @@ def run(
                 elif model_type == 'anygrasp':
                     grasps, scores, timings["planning"] = grasp_plan_fn(intrinsic.copy(), extrinsic.copy(),
                                                                         rgb_imgs.copy(), depth_imgs.copy())
+                elif model_type == 'graspnerf':
+                    grasps, scores, timings["planning"] = grasp_plan_fn(n,
+                                                                        intrinsic.copy(),
+                                                                        extrinsic.copy(),
+                                                                        rgb_imgs.copy(),
+                                                                        )
                 else:
                     grasps, scores, timings["planning"] = grasp_plan_fn(state)
 
