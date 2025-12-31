@@ -21,7 +21,7 @@ class ANYGrasp(object):
 
     def __call__(self, intrinsic=None, extrinsic=None, rgb_imgs=None, depth_imgs=None, scene_mesh=None, aff_kwargs={}):
         assert intrinsic.shape == (3, 3)
-        assert extrinsic.shape == (4, 4)
+        assert extrinsic.shape == (1, 7)
         assert rgb_imgs.shape == (1, 480, 640, 3)
         assert depth_imgs.shape == (1, 480, 640)
 
@@ -70,7 +70,7 @@ class ANYGrasp(object):
         # print(gg_pick.scores)
         # print('grasp score:', gg_pick[0].score)
         R_delta = Rotation.from_euler('y', 90, degrees=True)
-        T_task_cam = Transform.from_matrix(extrinsic).inverse()
+        T_task_cam = Transform.from_list(extrinsic[0]).inverse()
         grasps = []
         scores = []
         for i in range(len(gg_pick)):
