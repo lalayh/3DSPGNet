@@ -169,10 +169,12 @@ class ClutterRemovalSim(object):
         extrinsics = [camera_on_sphere(origin, r, theta, phi) for phi in phi_list]
         rgb_imgs = np.empty((n, self.camera.intrinsic.height, self.camera.intrinsic.width, 3), np.float32)
         depth_imgs = np.empty((n, self.camera.intrinsic.height, self.camera.intrinsic.width), np.float32)
+        extrinsics_np = np.empty((n, 7), np.float32)
 
         timing = 0.0
         for i, extrinsic in enumerate(extrinsics):
             rgb_img, depth_img = self.camera.render(extrinsic)
+            extrinsics_np[i] = extrinsic.to_list()
 
             # add noise
             depth_img = apply_noise(depth_img, self.add_noise)
@@ -188,7 +190,7 @@ class ClutterRemovalSim(object):
         pc = high_res_tsdf.get_cloud()
         pc = pc.crop(bounding_box)
 
-        return tsdf, pc, timing, self.camera.intrinsic.K, extrinsics[0].as_matrix(), rgb_imgs, depth_imgs
+        return tsdf, pc, timing, self.camera.intrinsic.K, extrinsics_np, rgb_imgs, depth_imgs
 
     def execute_grasp(self, grasp, remove=True, allow_contact=False):
         T_world_grasp = grasp.pose
