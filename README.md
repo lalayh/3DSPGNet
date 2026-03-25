@@ -1,8 +1,8 @@
-# 3D SPGNet: A 6-DoF Grasp Detection Network via 3D Surface Constraint and TSDF Reconstruction
+# 3-D SPGNet: A 6-DoF Grasp Detection Network via 3-D Surface Constraint and TSDF Reconstruction
 
 [Hang Yu](https://rh.nankai.edu.cn/info/1037/1144.htm), [Xuebo Zhang](https://rh.nankai.edu.cn/info/1016/1136.htm), [Zhenjie Zhao](https://rh.nankai.edu.cn/info/1016/1169.htm), [Haochong Chen](https://rh.nankai.edu.cn/info/1037/1360.htm)
 
-IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS (accepted) 2025
+[IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS](http://dx.doi.org/10.1109/TIE.2026.3672807)
 * The experimental video can be found [here](https://youtu.be/0cW_LnQTG8Y).
 
 ## Introduction
@@ -151,10 +151,13 @@ Data generation is very costly, so we upload the generated data . However, the o
 ## Citing
 
 ```
-@article{TBD,
- author = {Hang Yu, Xuebo Zhang, Zhenjie Zhao, Haochong Chen},
- journal = {IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS (accepted)},
- title = {3D SPGNet: A 6-DoF Grasp Detection Network via 3D Surface Constraint and TSDF Reconstruction},
- year = {2025}
+@ARTICLE{11456265,
+  author={Yu, Hang and Zhang, Xuebo and Zhao, Zhenjie and Chen, Haochong},
+  journal={IEEE Transactions on Industrial Electronics}, 
+  title={3-D SPGNet: A 6-DoF Grasp Detection Network via 3-D Surface Constraint and TSDF Reconstruction}, 
+  year={2026},
+  volume={},
+  number={},
+  pages={1-13}
 }
 ```
